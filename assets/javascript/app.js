@@ -6,18 +6,18 @@ $( document ).ready(function() {
 	btn.text("Start Game");
 	$("#start").html(btn);
 
-	//array of arrays: question[0], array with answers[1][i], and index of true answer[2], default status of answer false[3], default status of answer selected false[4], and a fun fact[5]
+	//question[0], array with answers[1][i], and index of true answer[2], default status of answer false[3], default status of answer selected false[4], and a fun fact[5]
 	 var questions = [
     	 ["What is You know who's middle name?", ["Severus", "Horrace", "Tom", "Marvolo"] , 3, false, false, "Lord Voldemort's full name is Tom Marvolo Riddle, Tom after his muggle dad and Marvolo after his grandfather." ], 
     	 ["What does the K in J.K. Rowling stand for?", ["Kathrine", "Kathleen", "Katrina", "Kaley"], 1, false, false, "Joanne Kathleen's last name is pronounced Row-ling, like rowing a boat." ],
     	 ["What is the name of Hermione and Ron's son?", ["Fred", "Albus", "Hugo", "Sirius"], 2, false, false, "Ron and Hermione have two children named Hugo and Rose." ],
     	 ["Who is Neville Longbottom married to?", ["Hannah Abbott", "Luna Lovegood", "Lavender Brown", "Ginny Weasley"], 0, false, false, "Neville Longbottom's  wife Hannah Abbott is landlady of the Leaky Cauldron, entrance to Diagon Alley in London." ],
     	 ["Which of the following items was not a horcrux?", ["Rowena Ravenclaw's Lost Diadem", "Godric Gryffindor's Sword", "Salazar Slytherin's Locket", "Helga Hufflepuff's Cup"], 1, false, false, "Voldemort would have loved to collect all four founders objects, but he could never find the sword as it only presents itself to a worthy Gryffindor." ],
-    	 ["What shape does Hermone's Patronus take?", ["Beaver", "Lynx", "Otter", "Doe"], 2, false, false, "Ron's patronus is a Jack Russell Terrier which are known to chase otters."]
+    	 ["What shape does Hermione's Patronus take?", ["Beaver", "Lynx", "Otter", "Doe"], 2, false, false, "Ron's patronus is a Jack Russell Terrier which are known to chase otters."]
 
     ];
 
-     //when the start button is clicked, the game loads   
+     //start button --> the game loads   
     $(".startBtn").on("click", game);
 
      //this function handles the trivia game's main functions
@@ -35,7 +35,7 @@ $( document ).ready(function() {
     	$(".radioButton").on("click", function(){
     		
     		//logs true/false
-    		var answerSelect = $(this).attr("value"); //is the selected answer true or false	
+    		var answerSelect = $(this).attr("value"); //selected answer true/false	
     		var questionSelect = $(this).attr("name"); //which question was answered
     		questions[questionSelect][3] = answerSelect; //this will overwrite if the question was answered true or false, cannot put into if statement since a user might check true, then false
     		questions[questionSelect][4] = true; //this says that the quesiton was answered, whether true or false it won't be counted as "unanswered"
@@ -58,7 +58,7 @@ $( document ).ready(function() {
     	for ( i=0; i<4; i++) {
     		var a = question[1][i];
 	    	//input tag with answer
-	    	var radio = $('<input><p>' + a + '</p></input>');
+	    	var radio = $('<input><label>' + a + '</label>');
 	    	//assign a class to all input tags .radioButton
 	    	radio.addClass("radioButton");
 	    	//make the input type "radio"
@@ -203,27 +203,4 @@ $( document ).ready(function() {
 	   
 
 
-    });
-
-
-
-
-    
-   
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});

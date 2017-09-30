@@ -1,4 +1,5 @@
-.radioButton {
+.radioButton,
+label {
 	padding: 10px;
 	display: inline;
 	font-size: 20px;
@@ -19,3 +20,4 @@ button {
 #results {
 	text-align: center;
 }
+
