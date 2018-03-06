@@ -1,23 +1,25 @@
-.radioButton,
-label {
-	padding: 10px;
-	display: inline;
-	font-size: 20px;
-}
-
-#timer {
-  font-family: monospace;
-  font-size: 60px;
-  text-align: center;
-
-}
-
-button {
+.jumbotron {
+	min-height: 800px;
 	position: relative;
-	top: 50px;
 }
 
-#results {
-	text-align: center;
+#final-btn, 
+#submitAnswer,
+#next-btn {
+	position: absolute;
+	top: 200px;
+	width: 115px;
+}
+
+#start-btn {
+	position: absolute;
+	top: 200px;
+	width: 115px;
+}
+
+#gif {
+	position: absolute;
+	top: 300px;
+	left: 150px; 
 }
 

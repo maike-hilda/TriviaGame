@@ -1,206 +1,187 @@
-//make sure the docuemnt is ready before js loads
-$( document ).ready(function() {
+// Harry Potter Trivia in JavaScript and JQuery
+$(document).ready(function () {
+	var questions = [
+		{
+			question: "What is You know who's middle name?",
+			answers: ["Severus", "Horrace", "Tom", "Marvolo"],
+			correct: "Marvolo",
+			funFact: "Lord Voldemort's full name is Tom Marvolo Riddle, " +
+				"Tom after his muggle dad and Marvolo after his grandfather.",
+			gifKeyword: "Tom Riddle Voldemort"
+		 }, {
+			question: "What does the K in J.K. Rowling stand for?", 
+			answers: ["Kathrine", "Kathleen", "Katrina", "Kaley"],
+			correct: "Kathleen", 
+			funFact: "Joanne Kathleen's last name is pronounced Row-ling, like rowing a boat.",
+			gifKeyword: "J.K. Rowling"
+		 }, {
+			question: "What is the name of Hermione and Ron's son?",
+			answers: ["Fred", "Albus", "Hugo", "Sirius"], 
+			correct: "Hugo", 
+			funFact: "Ron and Hermione have two children named Hugo and Rose.",
+			gifKeyword: "Ron Hermione Hugo"
+		 }, {
+			question: "Who is Neville Longbottom married to?",
+			answers: ["Hannah Abbott", "Luna Lovegood", "Lavender Brown", "Ginny Weasley"],
+			correct: "Hannah Abbott",
+			funFact: "Neville Longbottom's  wife Hannah Abbott is landlady of the Leaky Cauldron, " +
+				"entrance to Diagon Alley in London.",
+			gifKeyword: "Neville Longbottom Hannah Abbott"
+		 }, {
+			question: "Which of the following items was not a horcrux?",
+			answers: ["Rowena Ravenclaw's Lost Diadem", "Godric Gryffindor's Sword", 
+				"Salazar Slytherin's Locket", "Helga Hufflepuff's Cup"],
+			correct: "Godric Gryffindor's Sword",
+			funFact: "Voldemort would have loved to collect all four founders objects, but he could never " +
+				"find the sword as it only presents itself to a worthy Gryffindor.",
+			gifKeyword: "Slytherin's Sword"
+		}, {
+			question: "What shape does Hermione's Patronus take?",
+			answers: ["Beaver", "Lynx", "Otter", "Doe"],
+			correct: "Otter",
+			funFact: "Ron's patronus is a Jack Russell Terrier which are known to chase otters.",
+			gifKeyword: "Hermione Otter Patronus"
+		}
+	];
+	var correct;
+	var incorrect;
+	var unanswered;
+	var questionNumber; 
+	var startBtn = $("<button>");
+		startBtn.attr("id", "start-btn");
+		startBtn.attr("type", "button");
+		startBtn.addClass("btn btn-primary btn-lg");
+		startBtn.text("Play");
+		$("#start").html(startBtn);
+	
+	function startGame() {
+		console.log("Game started");
+		$("#start").empty();
+		correct = 0;
+		incorrect = 0;
+		unanswered = 0;
+		questionNumber = 0; // this will be 1 less than the question #
+		// shuffle order of the questions
+		shuffle(questions);
+		// shuffle order of answer options
+		for (var i = 0; i < questions.length; i++) {
+			shuffle(questions[i].answers);
+		}
+		nextQuestion();
+	}
 
-	var btn = $("<button>");
-	btn.addClass("btn btn-default startBtn btn-lg");
-	btn.text("Start Game");
-	$("#start").html(btn);
+	// Fisher-Yates Shuffle
+	function shuffle(array) {
+		var currentIndex = array.length;
+		var tempVal; 
+		var randIndex;
+		
+		// while there are elements to shuffle
+		while (0 !== currentIndex) {
+		
+				// pick an element of the remaining elements
+				randIndex = Math.floor(Math.random() * currentIndex);
+				// since JS is zero based subtract before use
+				currentIndex--;
+			// swap current and random value
+				tempVal = array[currentIndex];
+				array[currentIndex] = array[randIndex];
+				array[randIndex] = tempVal;
+		}
+		return array;
+	}
+	
+	function questionToHtml(question, answers) {
+		var questAnsHtml = '<form><fieldset><legend>' + question + '</legend><div class="form-group">';
+		for (var i = 0; i < answers.length; i++) {
+			questAnsHtml += '<div class="custom-control custom-radio"><input type="radio" ' +
+				'class="custom-control-input" name="triviaQuestion" id="' +
+				answers[i] + '" value="' + answers[i] + '"><label class="custom-control-label" ' +
+				'for="' + answers[i] + '">' + answers[i] + '</label></div>';
+		}
+		questAnsHtml += '<button type="submit" id="submitAnswer" class="btn btn-primary btn-lg">' +
+			'Submit</button></div></fieldset></form>';
+		// console.log(questAnsHtml);
+		$("#question-answer-score").html(questAnsHtml);
+		return question, answers;
+	}
+	
+	function nextQuestion() {
+		questionToHtml(questions[questionNumber].question, questions[questionNumber].answers);
+	}
 
-	//question[0], array with answers[1][i], and index of true answer[2], default status of answer false[3], default status of answer selected false[4], and a fun fact[5]
-	 var questions = [
-    	 ["What is You know who's middle name?", ["Severus", "Horrace", "Tom", "Marvolo"] , 3, false, false, "Lord Voldemort's full name is Tom Marvolo Riddle, Tom after his muggle dad and Marvolo after his grandfather." ], 
-    	 ["What does the K in J.K. Rowling stand for?", ["Kathrine", "Kathleen", "Katrina", "Kaley"], 1, false, false, "Joanne Kathleen's last name is pronounced Row-ling, like rowing a boat." ],
-    	 ["What is the name of Hermione and Ron's son?", ["Fred", "Albus", "Hugo", "Sirius"], 2, false, false, "Ron and Hermione have two children named Hugo and Rose." ],
-    	 ["Who is Neville Longbottom married to?", ["Hannah Abbott", "Luna Lovegood", "Lavender Brown", "Ginny Weasley"], 0, false, false, "Neville Longbottom's  wife Hannah Abbott is landlady of the Leaky Cauldron, entrance to Diagon Alley in London." ],
-    	 ["Which of the following items was not a horcrux?", ["Rowena Ravenclaw's Lost Diadem", "Godric Gryffindor's Sword", "Salazar Slytherin's Locket", "Helga Hufflepuff's Cup"], 1, false, false, "Voldemort would have loved to collect all four founders objects, but he could never find the sword as it only presents itself to a worthy Gryffindor." ],
-    	 ["What shape does Hermione's Patronus take?", ["Beaver", "Lynx", "Otter", "Doe"], 2, false, false, "Ron's patronus is a Jack Russell Terrier which are known to chase otters."]
+	function evaluateStep(correctAnswer, funFact, gif) {
+		var isChecked = $('input[name=triviaQuestion]:checked').val();
+		console.log(gif);
+		$("#question-answer-score").empty();
+		var display = '<div class="text-center">';
 
-    ];
+		switch(isChecked) {
+			case correctAnswer:
+				correct++;
+				console.log("correct answer", correct);
+				display += '<p>Correct</p>';
+				break;
+			case undefined:
+				unanswered++;
+				console.log("no answer", unanswered);
+				display += "<p>You did not make a choice.</p><p>The correct answer was " + correctAnswer + ".<p>";
+				break;
+			default: 
+			incorrect++;
+			console.log("false answer", incorrect);
+			display += "<p>Incorrect</p><p>The correct answer was " + correctAnswer + ".<p>";
+		}
 
-     //start button --> the game loads   
-    $(".startBtn").on("click", game);
+		if (questionNumber < questions.length -1) {
+			display += '</div><p>' + funFact + '</p><button type="button" id="next-btn" ' +
+				'class="btn btn-primary btn-lg">Next</button>';
+		} else {
+			console.log("final question");
+			display += '</div><p>' + funFact + '</p><button type="button" id="final-btn" ' +
+				'class="btn btn-primary btn-lg">Results</button>';
+		}
+		
+		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+      		gif + "&api_key=dc6zaTOxFJmzC&limit=1";
+    	// create AJAX call for wizard button clicked
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response) {
+			display += '<div class="text-center"><img src="' + response.data[0].images.fixed_height.url +
+				'" alt="' + gif + '" id="gif"></div>';
+			// console.log(display);
+			$("#question-answer-score").html(display);	
+		});
 
-     //this function handles the trivia game's main functions
-    function game(){
-    	//remvoe the start button
-    	$("#timer").append("01:30");
-    	$("#start").empty();
+		// console.log(display);
+		// $("#question-answer-score").html(display);
+	}
 
-    	stopwatch.start();    	
+	function evaluateFinal() {
+		var display = '<div class="text-center"><p>Correct Answers: ' + correct + '</p><p>Incorrect Answers: ' +
+			incorrect + '</p><p>Unanswered: ' + unanswered + '</p></div>' + 
+			'<button type="button" id="start-btn" class="btn btn-primary btn-lg">Play Again</button>';
+		$("#question-answer-score").html(display);
+	}
+	
+	function timer() {
+		
+	}
 
-    	for (j = 0; j<questions.length; j++) {
-    		createForm(questions[j], j);
-    	};
-    	
-    	$(".radioButton").on("click", function(){
-    		
-    		//logs true/false
-    		var answerSelect = $(this).attr("value"); //selected answer true/false	
-    		var questionSelect = $(this).attr("name"); //which question was answered
-    		questions[questionSelect][3] = answerSelect; //this will overwrite if the question was answered true or false, cannot put into if statement since a user might check true, then false
-    		questions[questionSelect][4] = true; //this says that the quesiton was answered, whether true or false it won't be counted as "unanswered"
-    	});
-    	//done button
-    	doneBtn();
-    	
+	// load game when pressing Play
+	$(document).on("click", "#start-btn", startGame);
+	
+	$(document).on("click", "#submitAnswer", function(event) {
+		event.preventDefault();
+		evaluateStep(questions[questionNumber].correct, questions[questionNumber].funFact, 
+			questions[questionNumber].gifKeyword);
+		questionNumber++;
+		console.log("Question #", questionNumber);		
+	});
 
-    };
+	$(document).on("click", "#next-btn", nextQuestion);
 
-
-    	
-    //this creates the radio buttons and takes as input the question/answer and the question number 	
-    function createForm(question, number){
-
-       	//put the question as heading level 3 into the form
-    	//$("#form" + number).append("<h2>" + question[0] + "</h2>");
-    	$("#main").append("<h3>" + question[0] + "</h3>");
-    	//create radio buttons
-    	for ( i=0; i<4; i++) {
-    		var a = question[1][i];
-	    	//input tag with answer
-	    	var radio = $('<input><label>' + a + '</label>');
-	    	//assign a class to all input tags .radioButton
-	    	radio.addClass("radioButton");
-	    	//make the input type "radio"
-	    	radio.attr("type", "radio");
-	    	//give the radio buttons ids 1-4
-	    	radio.attr("id", i);
-	    	//give the radio buttons name=index of question
-	    	radio.attr("name", number);
-
-	    	radio.attr("value", a);
-	    	
-	    	//value of the button is true if the answer is the right answer
-	    	if ( question[2] === i ) {
-	    		radio.attr("value", true);
-	    	}
-	    	else {
-	    		radio.attr("value", false);
-	    	};
-	    	
-	    	//add to the nth form
-	    	//$("#form" + number).append(radio);
-	    	$("#main").append(radio);
-	    	var test = ($(this).attr("type"));
-	    	console.log(test);
-	    };
-    }; //closes createForm
-
-    //this creates the done button 
-    function doneBtn() {
-    	var btnEnd = $("<button>");
-    	btnEnd.addClass("btn btn-default btn-lg endButton");
-    	btnEnd.text("Done");
-    	$("#done").html(btnEnd);
-
-
-    	$(".endButton").on("click", result);
-
-    };
-    
-    //displays the reslts
-    function result() {
-
-    	
-    		stopwatch.stop();
-    		    		
-    		//clear all html
-    		$("#main").empty();	
-    		$("#done").empty();
-    		//display results
-    		var correct = 0;
-    		var wrong = 0;
-    		var unanswered = questions.length;
-
-    		
-
-    		//count all true's in questions
-    		for (i=0; i<questions.length; i++) {
-    			
-    			if (questions[i][3] === "true"){
-    				correct++;
-    				unanswered--;
-    				
-    			}
-    			else if (questions[i][4] === true && questions[i][3] === "false"){
-    				wrong++;
-    				unanswered--;
-    				
-    			};
-
-    		};
-    		
-    		$("#results").append("<h2>All Done!</h2>");
-    		$("#results").append("<p>Correct answers: " + correct + "</p>");
-    		$("#results").append("<p>Incorrect answers: " + wrong + "</p>");
-    		$("#results").append("<p>Unanswered: " + unanswered + "</p>");
-    		$("#fyi").append("<h2>The correct answers are: </h2>");
-    		for (i=0; i<questions.length; i++) {
-    			$("#fyi").append("<p>" + questions[i][0] + " <b>Answer: </b>" + questions[i][1][questions[i][2]] + "</p>");
-    			$("#fyi").append("<p><b>Fun fact: </b>" + questions[i][5] +"</p>");
-    		}
-    		
-    };
-
-
-	//  Variable that will hold our setInterval that runs the stopwatch
-	var intervalId;
-	var playing;
-
-	var stopwatch = {
-
-		time: 90,
-	              
-		start: function() {
-
-	    // DONE: Use setInterval to start the count here and set the clock to running.
-	               
-	    	intervalId = setInterval(stopwatch.count, 1000);
-	    	intervalId = setTimeout(result, 90*1000);
-	    	playing = true;
-	                
-	    },
-	    
-	    stop: function() {
-
-	    	// to stop the countdown
-	        $("#timer").empty();
-	        clearInterval(intervalId);
-	   		playing = false;
-	   	},
-	              
-	    count: function() {
-
-		    	if (stopwatch.time >= 0 && playing === true) {
-		    	// decrease time by 1 each second
-		        stopwatch.time--;
-		        // convert to 00:00 format using the timeConverter function
-		        var converted = stopwatch.timeConverter(stopwatch.time);
-		        // display the countdown
-		        $("#timer").html(converted);
-		    }
-	   	},
-	    
-	    timeConverter: function(t) {
-
-	      	var minutes = Math.floor(t / 60);
-	        var seconds = t - (minutes * 60);
-
-	        if (seconds < 10) {
-	            seconds = "0" + seconds;
-	        }
-
-	        if (minutes === 0) {
-	            minutes = "00";
-	        }
-	        else if (minutes < 10) {
-	        	minutes = "0" + minutes;
-	        }
-
-	        return minutes + ":" + seconds;
-	    }
-	};
-	   
-
-
+	$(document).on("click", "#final-btn", evaluateFinal);
 });
