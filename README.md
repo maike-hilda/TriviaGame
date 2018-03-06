@@ -1,2 +1,5 @@
 # TriviaGame
-a Harry Potter Trivia Game
+
+using JavaScript, jQuery, and GiphyAPI
+
+
