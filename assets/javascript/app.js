@@ -1,4 +1,6 @@
 // Harry Potter Trivia in JavaScript and JQuery
+"use strict";
+
 $(document).ready(function () {
 	var questions = [
 		{
